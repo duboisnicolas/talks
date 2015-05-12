@@ -1,0 +1,195 @@
+\documentclass[12pt]{beamer}
+
+% Packages:
+\usepackage[utf8, utf8x]{inputenc}
+\usepackage[american, french]{babel}
+\usepackage{graphicx, aeguill, lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[nice]{nicefrac}
+\usepackage{ifpdf}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps,pgfshade, xcolor}
+
+% Beamer tuning:
+\usetheme{Copenhagen}
+\usefonttheme[onlymath]{serif}
+\beamertemplatenavigationsymbolsempty
+\beamertemplatetransparentcovereddynamic
+
+% LaTeX macros:
+\newcommand{\ofgfr}[1]{\og{}#1\fg{}}
+\newcommand{\ofgen}[1]{``\begin{otherlanguage}{american}#1\end{otherlanguage}''}
+\newcommand{\so}[1]{\begin{flushright}\structure{$\rightarrow$ #1}\end{flushright}}
+
+% Images:
+\pgfdeclareimage[height=5mm]{amg-dev-logo}{images/amg-developpement-logo}
+\pgfdeclareimage[height=5mm]{gpdis-ecommerce-logo}{images/gpdis-ecommerce-logo}
+\pgfdeclareimage[width=15mm]{sudweb-logo}{images/sudweb-logo}
+\pgfdeclareimage[width=60mm]{sudweb-big-logo}{images/sudweb-big-logo}
+\pgfdeclareimage[width=70mm]{languages}{images/languages}
+\pgfdeclareimage[width=40mm]{prozac}{images/prozac}
+
+% Titlepage:	
+\title{Vers des langues de programmation ?}
+\subtitle{SudWeb 2011}
+\author[Nicolas Dubois]{Nicolas Dubois - @duboisnicolas}
+\date{Vendredi 27 mai 2011}
+\institute{Lightning Talk}
+\logo{\pgfuseimage{sudweb-logo}}
+
+\begin{document}
+
+% Aliases:
+\def\tm{\texttrademark}
+\def\r{\up{\textregistered}}
+\def\sw{SudWeb'11}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Préambule}
+Cette présentation est ma nouvelle \emph{arme absolue} \pause pour endormir 
+mes enfants en moins de \alert{5 minutes} le soir !
+\end{frame}
+
+\begin{frame}{Préambule}
+Bon courage !
+\end{frame}
+
+\begin{frame}{Question initiale}{Paradoxe}
+\begin{block}{Question initiale}
+Pourquoi faut-il \alert{plusieurs années d'expérience} sur un \alert{langage} de programmation ?
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Définition d'un langage}
+\begin{block}{Définition}
+Langage = Syntaxe + Sémantique
+\end{block}
+\pause
+\begin{exampleblock}{Exemple de langage}
+\begin{description}
+\item[Syntaxe :] 
+\lstset{language={Java}, basicstyle=\scriptsize}
+    \begin{lstlisting}
+public class A extends B {
+    // Some code...
+}
+    \end{lstlisting}
+    
+\item[Sémantique :] définition d'une classe d'objet A qui étend la classe d'objet B.
+\end{description}
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Définition d'un langage de programmation}
+\begin{block}{Définition}
+Langage = Syntaxe + Sémantique
+\end{block}
+\pause
+\begin{block}{Définition}
+Langage de programmation = Syntaxe + Sémantique + ?
+\end{block}
+\end{frame}
+
+\begin{frame}{Contexte}
+\begin{block}{Assertion : « Je maîtrise PHP »}
+\begin{enumerate}[<+->]
+\pause
+\item Environnement de développement ;
+\item Environnement de production ;
+\item API ;
+\item Écosystème ;
+\item La communauté liée au langage.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}{Définition d'une langue}
+\begin{block}{Définition}
+Langage = Syntaxe + Sémantique
+\end{block}
+\begin{block}{Définition}
+Langage de programmation = Syntaxe + Sémantique + ?
+\end{block}
+\pause
+\begin{block}{Définition}
+Langue = Langage + Histoire + Culture
+\end{block}
+\end{frame}
+
+\begin{frame}{Langue de programmation}{Histoire}
+Les inconsistences du langage ;
+\pause
+\begin{alertblock}{Exemple avec la librairie standard de PHP pour le traitement des 
+chaînes de caractères}
+\begin{enumerate}
+\item str\_repeat()/str\_replace() vs strlen()/strpos()
+\item strtolower()/strtoupper() vs bin2hex()/nl2br()
+\item stripslashes() vs strip\_tags()
+\item base64\_decode()/base64\_encode() vs urldecode()/urlencode()
+\end{enumerate}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{Langue de programmation}{Culture}
+\begin{block}{Culture}
+Énormément d'éléments du langage sont culturels (car issus de conventions).
+\end{block}
+\pause
+\begin{exampleblock}{Exemple de convention}
+En python, il n'existe pas de mot clé pour instancier une classe.
+\lstset{language={Python}, basicstyle=\scriptsize}
+    \begin{lstlisting}
+my_object = Object(params)
+my_var = my_function(params)
+    \end{lstlisting}
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Langue de programmation}{Langue vs Langage}
+\begin{block}{Langue vs Langage}
+\begin{description}[<+->]
+\item[Langage de programmation :] la \alert{modalité de communication} entre l'homme et la machine ;
+\item[Langue de programmation :] une instanciation de cette modalité au travers une histoire et une culture.
+\end{description}
+\end{block}
+\pause
+\begin{exampleblock}{Exemple de langue de programmation}
+Java, PHP, Python, Ruby, \emph{etc}, sont des \alert{langues de programmation}.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Conclusion}
+\begin{block}{À quoi ça sert ?}
+\ofgfr{Heu, ouais cool. Ça sert à quoi en fait ?\\\pause --- À rien !}
+\end{block}
+\end{frame}
+
+\begin{frame}{Fausse fin}
+\begin{center}
+\huge{Merci}
+\end{center}
+\end{frame}
+
+\begin{frame}{Conclusion}
+\pause
+\begin{alertblock}{Définition d'un développeur web}
+Un développeur web n'est pas un \alert{bidouilleur de langages de programmation}.
+\end{alertblock}
+\pause
+\begin{block}{Définition d'un développeur web}
+Un développeur web est un \alert{polyglotte} qui met en œuvre plusieurs \alert{langues de programmation}.
+\end{block}
+\end{frame}
+
+\begin{frame}{Vraie fin}
+\begin{center}
+\Huge{Merci}
+\end{center}
+\end{frame}
+
+\end{document}

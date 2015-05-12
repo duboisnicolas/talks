@@ -1,0 +1,491 @@
+\documentclass[notes]{beamer}
+
+% Packages:
+\usepackage[utf8, utf8x]{inputenc}
+\usepackage[american, french]{babel}
+\usepackage{graphicx, aeguill, lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[nice]{nicefrac}
+\usepackage{ifpdf}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps,pgfshade, xcolor}
+
+% Beamer tuning:
+\usetheme{Warsaw}
+\useinnertheme{rectangles}
+\usefonttheme[onlysmall]{structurebold}
+%\setbeamercovered{transparent}
+\beamertemplatenavigationsymbolsempty
+\beamertemplatetransparentcovereddynamic
+
+% LaTeX macros:
+\newcommand{\ofgfr}[1]{\og{}#1\fg{}}
+\newcommand{\ofgen}[1]{``\begin{otherlanguage}{american}#1\end{otherlanguage}''}
+\newcommand{\so}[1]{\begin{flushright}\structure{$\rightarrow$ #1}\end{flushright}}
+
+% Images:
+\pgfdeclareimage[height=5mm]{amg-dev-logo}{images/amg-developpement-logo}
+\pgfdeclareimage[height=5mm]{gpdis-ecommerce-logo}{images/gpdis-ecommerce-logo}
+\pgfdeclareimage[width=15mm]{sudweb-logo}{images/sudweb-logo}
+\pgfdeclareimage[width=60mm]{sudweb-big-logo}{images/sudweb-big-logo}
+\pgfdeclareimage[width=70mm]{languages}{images/languages}
+\pgfdeclareimage[width=40mm]{prozac}{images/prozac}
+
+% Titlepage:
+\title[Vers des langues de programmation ?]
+    {Vers des langues de programmation ?\\
+    \tiny{(version longue, mais pas trop)}}
+\subtitle{SudWeb'11 - Lightning Talk}
+\subject{Lightning Talk}
+\author[Nicolas Dubois - @duboisnicolas]
+    {Nicolas Dubois\\{\small <nicolas.c.dubois@gmail.com>}}
+
+\date{Mardi 26 avril 2011 / Apéroweb Toulouse}
+\logo{\pgfuseimage{sudweb-logo}}
+
+\begin{document}
+
+% Aliases:
+\def\tm{\texttrademark}
+\def\r{\up{\textregistered}}
+\def\sw{SudWeb'11}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\section{Introduction}
+
+\subsection{Préambule}
+
+\begin{frame}{Préambule}{Ça va être chaud !}
+\pause
+\begin{itemize}[<+->]
+\item Désolé j'ai pas assez dormi (4h-7h) ;
+\item En plus, j'ai pas pu aller chez le coiffeur samedi midi. J'ai une coupe de ouf !
+\item J'sais même pas si j'ai fini mes slides, on va voir…
+\item Ouais je craque un peu…
+\item \alert{Désolé…}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Préambule}{Au cas où…}
+\pause
+À priori, c'est une présentation pour les développeurs…\\
+\pause
+\vspace*{1cm}
+Pour les autres, El Deseo propose :
+\pause
+\begin{itemize}[<+->]
+\item les bieres corses à 3 EUR\footnote{J'ai voulu frimer et faire mes slides en \LaTeX{}, mais du coup, en standard, j'ai même pas
+le signe Euro, trop la honte !} ;
+\item les tapas entre 4.5 et 9 EUR.
+\end{itemize}
+\end{frame}
+
+\subsection{Présentation}
+
+\begin{frame}{Présentation}{Curriculum vit\ae}
+    \pause
+    \begin{itemize}[<+->]
+    \item Nicolas Dubois
+    \item Web Developer depuis 7 ans (eCommerce, agences web)
+    \item Actuellement chez AMG Développement, Groupe GPdis
+        \begin{itemize}
+        \item Discounteo.com
+        \item Pulsat.fr
+        \item Villatech.fr
+        \item VPCBoost.com
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Présentation}{Technologie}
+    \pause
+    \begin{itemize}[<+->]
+    \item PHP
+        \begin{itemize}
+        \item Magento ;
+        \item symfony 1.4 ;
+        \item Zend Framework 1.8 (oui c'est un peu vieux).
+        \end{itemize}
+    \item Python/Django
+    \end{itemize}
+    \pause
+    \begin{center}
+    \pgfuseimage{prozac}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Présentation}{Traitement automatique des langues}
+    \pause
+    Plusieurs stages dans le traitement automatique des langues :
+    \pause
+    \begin{itemize}[<+->]
+    \item LORIA (Nancy, Équipe Langue \&{} Dialogue) ;
+    \item Valoria (Vannes, Équipe RIMH) ;
+    \item IMAG/Liebniz (Grenoble, Équipe MAGMA).
+    \end{itemize}
+\end{frame}
+
+\subsection{Contexte}
+
+\begin{frame}{Contexte}{\sw, Nimes}
+    Conférence retenue pour \sw, sous la forme d'un \alert{Lightning Talk} (5 minutes).
+    \begin{center}
+    \pgfuseimage{sudweb-big-logo}
+    \end{center}
+    \pause
+    \alert{\bf $\rightarrow$ Il reste des places pour SudWeb : \url{http://sudweb.fr} !}
+\end{frame}
+
+\section{Rappels}
+
+\subsection{Langage machine}
+
+\begin{frame}{Langage machine}
+
+    \begin{block}{Langage machine}
+    Une machine ne comprend qu'un langage binaire : les instructions machines.
+    \end{block}
+
+    \pause
+
+    \begin{exampleblock}{Exemple d'instruction machine}
+    \verb!10110000 01100001!
+    \pause
+    Ce qui signifie :
+    \pause
+    \begin{description}[<+->]
+    \item [\verb!10110000!] instruction pour charger en mémoire ;
+    \item [\verb!01100001!] nombre 97 codé en binaire.
+    \end{description}
+    \end{exampleblock}
+
+
+    \begin{alertblock}{Problèmes}
+    \begin{itemize}[<+->]
+    \item Nombre d'instructions énorme !
+    \item Limite illisible !
+    \item Quasi-impossible à debugger !
+    \end{itemize}
+    \end{alertblock}
+
+\end{frame}
+
+\subsection{L'assembleur}
+
+\begin{frame}[fragile]{L'assembleur}{Première couche logicielle}
+    \begin{block}{Définition}
+    Représentation mnémonique des instructions machines qui permet d'écrire ces
+    dernières plus facilement.
+    \end{block}
+    \pause
+    \begin{exampleblock}{Traduction de 10110000 01100001}
+    \pause
+    \lstset{language={[x86masm]Assembler}, basicstyle=\scriptsize}
+    \begin{lstlisting}
+movb $0x61,%al
+    \end{lstlisting}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{L'assembleur}{Première couche logicielle}
+    \pause
+    \begin{exampleblock}{Écrire \ofgfr{Bonjour} en assembleur}
+    \lstset{language={[x86masm]Assembler}, basicstyle=\scriptsize}
+    \begin{lstlisting}
+        .globl _start
+BONJ:   .ascii  "Bonjour\n"
+ _start: mov     $4      , %eax
+         mov     $1      , %ebx
+         mov     $BONJ   , %ecx
+         mov     $8      , %edx
+         int     $0x80
+
+         mov     $1      , %eax
+         mov     $0      , %ebx
+         int     $0x80
+    \end{lstlisting}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{L'assembleur}{Première couche logicielle}
+    \begin{alertblock}{Problèmes}
+    \pause
+    \begin{itemize}[<+->]
+    \item Nombre d'instructions énormes (bis) ;
+    \item Énormément lié à l'architecture du microprocesseur ;
+    \item Effort cognitif trop important.
+    \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\subsection{Langage de programmation}
+
+\begin{frame}{Langage de programmation}{Définition}
+    \pause
+    \begin{block}{Définition}
+    Le langage de programmation est l'interface entre le langage machine et le
+    langage naturel humain.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Langage de programmation}{Schéma (QUI DÉCHIRE TOUT)}
+    \begin{center}
+    \pgfuseimage{languages}
+    \end{center}
+\end{frame}
+
+\section{Langage vs. Langue}
+
+\subsection{Langage}
+
+\begin{frame}{Langage}{Définition}
+    \pause
+    D'un point de vue linguistique, \pause
+    \begin{center}
+    Langage = Syntaxe + Sémantique
+    \end{center}
+\end{frame}
+
+\subsection{Langue}
+
+\begin{frame}{Langue}{Définition}
+    \pause
+    D'un point de vue linguistique,\pause
+    \begin{center}
+    Langue = Langage + Histoire + Culture
+    \end{center}
+\end{frame}
+
+\subsection{Inspiration}
+
+\begin{frame}{Inspiration}{Cas d'une application chez GPdis}
+    \pause
+    \begin{itemize}[<+->]
+    \item Nouvelle application qui va agréger :
+        \begin{itemize}[<+->]
+        \item ERP ;
+        \item CRM ;
+        \item Plateforme Magento ;
+        \item Prestataire logistique.
+        \end{itemize}
+    \end{itemize}
+    \pause
+    \begin{alertblock}{Formation}
+    L'équipe de développement va avoir une formation de 3 jours sur :
+    \pause
+    \begin{itemize}[<+->]
+    \item Flex (UI) ;
+    \item Cobol (API).\verb!</troll>!
+    \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\subsection{Portée d'un langage de programmation}
+
+\begin{frame}{Portée d'un langage de programmation}
+    \pause
+    \begin{alertblock}{En réalité}
+    Ça n'est pas 3 jours de formation, \pause mais plutôt 3 ans d'expérience.
+    \end{alertblock}
+    \pause
+    \begin{itemize}[<+->]
+    \item Environnement de développement ;
+    \item Environnement de production ;
+    \item API du langage ;
+    \item Écosystème du langage.
+    \end{itemize}
+\end{frame}
+
+\section{Vers des langues de programmation}
+
+\subsection{Évolution vers les langues naturelles}
+
+\begin{frame}[fragile]{Les langages sont de plus en plus évolués}
+    \pause
+    Plus les années passent et plus les langages deviennent \alert{proche} du langage naturel.
+\end{frame}
+
+\begin{frame}[fragile]{Les langages sont de plus en plus évolués}
+    \begin{exampleblock}{Exemple de code en PHP}
+\lstset{ %
+language=PHP,                % the language of the code
+basicstyle=\scriptsize,       % the size of the fonts that are used for the code
+}
+\begin{lstlisting}
+// Some code...
+if($set->isUndefined())) {
+    $set = new Set();
+}
+if($set->isEmpty()) {
+    $set->addElement(10);
+}
+foreach($set->getElements() as $element) {
+    print $element . PHP_EOL;
+}
+\end{lstlisting}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{Les langages sont de plus en plus évolués}
+    \begin{exampleblock}{Même code sans bruit syntaxique}
+    \pause
+\begin{verbatim}
+if set is undefined:
+    set = new Set
+if set is empty:
+    set add element 10
+foreach set get elements as element:
+    print element
+\end{verbatim}
+    \end{exampleblock}
+\end{frame}
+
+\subsection{Histoire}
+
+\begin{frame}{Histoire}{Notion de temps en philosophie}
+\pause
+L'informatique moderne a altéré la notion et la perception du temps en philosophie :
+\pause
+\begin{itemize}[<+->]
+\item nano-technologies ;
+\item vitesse de communication (emails, réseaux sociaux…).
+\end{itemize}
+\pause
+Les langages de programmation ont une \alert{histoire} sur une échelle de temps différente de
+celle des langues naturelles : \pause les langages de programmation évoluent plus vite que les langues.
+\end{frame}
+
+\begin{frame}[fragile]{Histoire}{Évolution d'un langage au cours de son histoire}
+\begin{exampleblock}{Exemple de PHP 1.0}
+\lstset{language=HTML, basicstyle=\tiny}
+\begin{lstlisting}
+<!--getenv HTTP_USER_AGENT-->
+<!--ifsubstr $exec_result Mozilla-->
+Hey, you are using Netscape!<p>
+<!--endif-->
+
+<!--sql database select * from table where user='$username'-->
+
+<!--ifless $numentries 1-->
+Sorry, that record does not exist<p>
+<!--endif exit-->
+
+Welcome <!--$user-->!<p>
+You have <!--$index:0--> credits left in your account.<p>
+
+<!--include /text/footer.html-->
+\end{lstlisting}
+\end{exampleblock}
+\end{frame}
+
+\subsection{Traduction inter-langages}
+
+\begin{frame}{Traduction inter-langages}
+\pause
+Il est difficile de traduire d'un langage à un autre parce que :
+\pause
+\begin{itemize}[<+->]
+\item il existe plusieurs paradigmes de programmation (procédural, orienté objet, événementiel, …) ;
+\item il faut un référentiel commun pour traduire une même fonctionnalité.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Traduction inter-langages}{Langage naturel}
+\begin{exampleblock}{\ofgfr{Quand les poules auront des dents…}}
+\pause
+\begin{description}[<+->]
+\item [en] \ofgfr{Quand les cochons voleront.} ;
+\item [it] \ofgfr{Quand les ânes voleront.} ;
+\item [ca] \ofgfr{Quand les vaches voleront.} ;
+\item [ar] \ofgfr{Quand les vaches iront au pélerinage sur leurs cornes.}.
+\end{description}
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{Traduction inter-langages}{Langage de programmation}
+\begin{exampleblock}{Exemple de classe en PHP}
+\lstset{ %
+language=PHP,                % the language of the code
+basicstyle=\scriptsize,       % the size of the fonts that are used for the code
+}
+\begin{lstlisting}
+/**
+ * Doc for my super class...
+ */
+class MyClass {
+    protected $_element = array();
+    public function getElement() {
+        return $this->_element;
+    }
+    public function setElement($elt) {
+        $this->_element = $elt;
+    }
+}
+\end{lstlisting}
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{Traduction inter-langages}{Langage de programmation}
+\pause
+\begin{alertblock}{Mauvais exemple de classe en python}
+\pause
+\lstset{ %
+language=python,
+basicstyle=\scriptsize,
+}
+\begin{lstlisting}
+class MyClass:
+    """Doc for my super class..."""
+    element = []
+    def get_element(self):
+        return self.element
+    def set_element(self, elt):
+        self.element = elt
+\end{lstlisting}
+\end{alertblock}
+\end{frame}
+
+\subsection{Culture de programmation}
+
+\begin{frame}{Culture de programmation}{Convention d'écriture}
+\pause
+À chaque langage de programmation correspond une culture de programmation (ensemble d'usages/conventions).
+\vspace*{1mm}
+\pause
+Comment nommer les méthodes : \pause
+\begin{description}[<+->]
+\item[Java] \verb!camelCase()! ;
+\item[Python] \verb!notation\_underscore()! (à peu près) ;
+\item[PHP] à priori \verb!camelCase()! mais on trouve de tout !
+\end{description}
+\end{frame}
+
+\section{Conclusion}
+
+\subsection{À quoi ça sert ?}
+
+\begin{frame}{Conclusion}{À quoi ça sert ?}
+\pause
+\ofgfr{Ouais, ok, génial, mais ça sert à quoi ?}
+\pause
+\begin{itemize}[<+->]
+\item à avoir une entrée gratuite pour \sw (pas de troll) ;
+\item revaloriser le travail du développeur ?
+\item quel est le langage ultime du futur ?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusion}{Questions}
+\pause
+\begin{center}
+{\LARGE Questions ?\footnote{J'ai mis ça pour être poli, mais ça serait plus cool
+si on buvait un coup…}}
+\end{center}
+\end{frame}
+
+\end{document}
