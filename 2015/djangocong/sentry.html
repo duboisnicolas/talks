@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>DjangoCong'15 • Sentry</title>
+
+		<meta name="description" content="DjangoCong'15 • Sentry">
+		<meta name="author" content="Nicolas Dubois • wo0dyn">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/serif.css" id="theme">
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<style type="text/css">
+			img.free { border: none !important; box-shadow: none !important; background: none !important;}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+				<section>
+					<h1>‹Sentry›</h1>
+					<h3>Surveiller son application Django</h3>
+					<p>
+						<small>
+							<a href="http://nicolasdubois.com">Nicolas Dubois</a> •
+							<a href="https://twitter.com/wo0dyn">@wo0dyn</a>
+						</small>
+					</p>
+				</section>
+
+				<section>
+					<h2>Nicolas Dubois</h2>
+					<h4><small style="padding-left:5em;margin-top: -1em"><strong>— wo0dyn</strong> (Github/Twitter/IRC)</small></h4>
+					<p class="fragment">Je suis :
+						<ul>
+							<li class="fragment">Développeur Web (Django) chez Oscaro
+							<li class="fragment">Guitariste
+						</ul>
+					</p>
+				</section>
+
+				<section>
+					<section>
+						<h2>Sentry</h2>
+						<h4>Agrégateur de logs</h4>
+						<p>
+							<img class="free" src="img/sentry-logotype.gif">
+						</p>
+					</section>
+					<section>
+						<h2>Sentry</h2>
+						<h4>Installation</h4>
+						<p>
+							<pre><code data-trim>$ mkproject --python=$(which python2.7) sentry</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>Sentry</h2>
+						<h4>Installation</h4>
+						<p>
+							<pre><code data-trim>
+$ mkproject --python=$(which python2.7) sentry
+(sentry) $ pip install sentry
+							</code></pre>
+						</p>
+						<p class="fragment">
+							<img class="free" src="img/bill-murray-drinks-coffee.gif">
+						</p>
+					</section>
+					<section>
+						<h2>Sentry</h2>
+						<h4>Installation</h4>
+						<p>
+							<pre><code data-trim>
+$ mkproject --python=$(which python2.7) sentry
+(sentry) $ pip install sentry
+(sentry) $ sentry init sentry.conf.py
+(sentry) $ vim sentry.conf.py
+							</code></pre>
+						</p>
+					</section>
+
+					<section>
+						<h2>Sentry</h2>
+						<h4>Configuration (minimale)</h4>
+						<pre><code data-trim>
+import os
+
+from sentry.conf.server import *  # noqa
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(os.path.dirname(__file__), 'sqlite.db'),
+    }
+}
+
+SENTRY_CACHE = 'sentry.cache.django.DjangoCache'
+
+SENTRY_WEB_HOST = '0.0.0.0'
+SENTRY_URL_PREFIX = 'http://{host}:{port}'.format(
+    host=SENTRY_WEB_HOST, port=SENTRY_WEB_PORT)
+SENTRY_ADMIN_EMAIL = '&lt;your email&gt;'
+						</code></pre>
+					</section>
+					<section>
+						<h2>Sentry</h2>
+						<h4>Installation</h4>
+					<pre><code data-trim>
+(sentry) $ sentry --config=sentry.conf.py upgrade
+(sentry) $ sentry --config=sentry.conf.py createsuperuser
+(sentry) $ sentry --config=sentry.conf.py start
+					</code></pre>
+				</section>
+
+					<section>
+						<h2>Sentry</h2>
+						<h4>Installation</h4>
+						<p>
+							<img class="free" src="img/screenshot-sentry-homepage.png">
+						</p>
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h2>Raven</h2>
+						<p>
+							<ul>
+								<li>Librairie liée au projet Sentry
+							</ul>
+						</p>
+					</section>
+
+					<section>
+						<h2>Raven</h2>
+						<h4>Clients</h4>
+						<p>
+							<img src="img/sentry-clients.png">
+						</p>
+					</section>
+
+					<section>
+						<h2>Raven</h2>
+						<h4>Création d'un projet Django</h4>
+						<p>
+							<pre><code data-trim>
+$ mkproject djangocong
+(djangocong) $ add2virtualenv .
+(djangocong) $ pip install django
+(djangocong) $ django-admin startproject djangocong .
+(djangocong) $ export DJANGO_SETTINGS_MODULE='djangocong.settings'
+(djangocong) $ django-admin migrate
+(djangocong) $ django-admin runserver
+							</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Création d'un projet Django</h4>
+						<p>
+							<img class="free" src="img/djangocong-runserver.png">
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Configuration</h4>
+						<p>
+							<pre><code data-trim>
+(djangocong) $ pip install raven
+(djangocong) $ vim djangocong/settings.py
+							</code></pre>
+							<pre><code data-trim>
+# Set your DSN value
+RAVEN_CONFIG = {
+    'dsn': 'http://ad9bd5836bd24ce5a06c392e605a7433:862e4d791a804619912d166c522469ca@0.0.0.0:9002/2',
+}
+
+# Add raven to the list of installed apps
+INSTALLED_APPS = INSTALLED_APPS + (
+    # ...
+    'raven.contrib.django.raven_compat',
+)
+							</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Configuration</h4>
+						<p>
+							<img class="free" src="img/sentry-project-configuration.png">
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Premier test</h4>
+						<p>
+							<pre><code data-trim>
+(djangocong) $ django-admin raven test
+Client configuration:
+  servers        : ['http://0.0.0.0:9002/api/2/store/']
+  project        : 2
+  public_key     : ad9bd5836bd24ce5a06c392e605a7433
+  secret_key     : 862e4d791a804619912d166c522469ca
+
+Sending a test message... Event ID was '8b6b450c14134e8db25ae1c805c59656'
+							</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Premier test</h4>
+						<p>
+							<img class="free" src="img/sentry-raven-test-1.png">
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Second test</h4>
+						<p>
+							<pre><code data-trim>
+(djangocong) $ for n ({1..50}); do django-admin raven test; done
+							</code></pre>
+							<img class="fragment free" src="img/sentry-raven-test-51.png">
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Exception</h4>
+						<p>
+							<pre><code data-trim>
+(djangocong) $ vim djangocong/urls.py
+							</code></pre>
+							<pre><code data-trim>
+from django.conf.urls import url
+
+from .views import ProductView
+
+urlpatterns = [
+    url(r'^product-test', ProductView.as_view()),
+]
+							</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Exception</h4>
+						<p>
+							<pre><code data-trim>
+(djangocong) $ vim djangocong/views.py
+							</code></pre>
+							<pre><code data-trim>
+from django.views.generic.base import TemplateView
+
+
+class ProductView(TemplateView):
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        price = 12.34
+        currency = 'EUR'
+
+        context_data['product_price'] = price + currency
+
+        return context_data
+							</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Exception</h4>
+						<p>
+							<img class="free" src="img/final-client.png">
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Exception</h4>
+						<p>
+							<img class="free" src="img/sentry-exception.png">
+						</p>
+					</section>
+					<section>
+						<h2>Raven</h2>
+						<h4>Exception</h4>
+						<p>
+							<img src="img/traceback.png">
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Logging</h2>
+						<h4>Configuration</h4>
+						<p>
+							<pre><code data-trim>
+(djangocong) $ vim djangocong/settings.py
+							</code></pre>
+							<pre><code data-trim>
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    },
+}
+							</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>Logging</h2>
+						<h4>Utilisation</h4>
+						<p>
+							<pre><code data-trim>
+import logging
+
+logger = logging.getLogger('djangocong')
+
+logger.error('There was some crazy error')    # Sentry
+logger.warning('There was some crazy error')  # Sentry
+logger.info('There was some crazy error')     # S̶e̶n̶t̶r̶y̶
+
+							</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>Logging</h2>
+						<h4>⚠ Attention aux paramètres</h4>
+						<p>
+							<pre><code data-trim>
+import logging
+import random
+
+from django.views.generic.base import TemplateView
+
+logger = logging.getLogger('djangocong.views')
+
+
+class ProductView(TemplateView):
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        key = random.choice(['foo', 'bar', 'baz'])
+
+        try:
+            kwargs[key]
+        except KeyError:
+            logger.error('Cannot find key %s' % key)
+
+        return context_data
+							</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>Logging</h2>
+						<h4>⚠ Attention aux paramètres</h4>
+						<p>
+							<img src="img/logging-wrong.png">
+						</p>
+					</section>
+					<section>
+						<h2>Logging</h2>
+						<h4>Attention aux paramètres</h4>
+						<p>
+							<pre><code data-trim>
+class ProductView(TemplateView):
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        key = random.choice(['foo', 'bar', 'baz'])
+
+        try:
+            kwargs[key]
+        except KeyError:
+            # logger.error('Cannot find key %s' % key)
+            logger.error('Cannot find key %s', key)
+
+        return context_data
+							</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>Logging</h2>
+						<h4>⚠ Attention aux paramètres</h4>
+						<p>
+							<img src="img/logging-right.png">
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Sentry</h2>
+						<h4>Données sensibles</h4>
+						<p>
+							<pre><code data-trim>
+(djangocong) $ vim djangocong/settings.py
+							</code></pre>
+							<pre><code data-trim>
+RAVEN_CONFIG = {
+    'dsn': 'http://ad9bd5836bd24ce5a06c392e605a7433:862e4d791a804619912d166c522469ca@0.0.0.0:9002/2',
+    'processors': (
+        'raven.processors.SanitizePasswordsProcessor',
+        'djangocong.raven_processors.SanitizeDjangonautsDataProcessor',
+    )
+}
+							</code></pre>
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Plugins</h2>
+						<p>
+							<ul>
+								<li>sentry-campfire</li>
+								<li>sentry-flowdock</li>
+								<li>sentry-github</li>
+								<li>sentry-gitlab</li>
+								<li>sentry-groveio</li>
+								<li>sentry-irc</li>
+								<li>sentry-jira</li>
+								<li>sentry-opsgenie</li>
+								<li>sentry-pagerduty</li>
+								<li>sentry-phabricator </li>
+								<li>sentry-pivotal</li>
+								<li>sentry-pushover</li>
+								<li>sentry-quotas </li>
+								<li>sentry-redmine</li>
+								<li>sentry-relay</li>
+								<li>sentry-slack</li>
+								<li>sentry-top</li>
+								<li>sentry-trello</li>
+								<li>sentry-webhooks</li>
+							</ul>
+						</p>
+					</section>
+					<section>
+						<h2>Authentification</h2>
+						<h4>Github</h4>
+						<p>
+							<pre><code data-trim>
+(sentry) $ vim sentry.conf.py
+							</code></pre>
+							<pre><code data-trim>
+GITHUB_APP_ID = 'github-app-id'
+GITHUB_API_SECRET = 'github-api-secret'
+
+BITBUCKET_CONSUMER_KEY = 'bitbucket-consumer-key'
+BITBUCKET_CONSUMER_SECRET = 'bitbucket-consumer-secret'
+							</code></pre>
+							<img src="img/sentry-auth.png">
+						</p>
+					</section>
+					<section>
+						<h2>Chez Oscaro</h2>
+						<p>
+							<ul>
+								<li>Une <strong>instance</strong> de Sentry par <strong>environnement</strong><br>(prod, pre-prod, recette…)
+								<li><strong>Sentry Master™</strong><br>(annote, alerte les collègues, priorise les anomalies…)
+							</ul>
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<h1>‹/Sentry›</h1>
+					<h3>Merci</h3>
+					<h4>Questions ?<br><small>(s'il vous plaît : non)</small></h4>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

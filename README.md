@@ -8,3 +8,8 @@
 ## 2013
 
 * Pytong (Toulon) : À quoi ressemblerait mon python ?
+
+## 2015
+
+* DjangoCong (Clermont-Ferrand) : Surveiller son application Django avec Sentry
+* DjangoCong (Clermont-Ferrand) : Invoke • Exécuter ses tâches en python

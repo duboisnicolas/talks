@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>DjangoCong'15 • Invoke</title>
+		<meta name="description" content="DjangoCong'15 • Invoke">
+		<meta name="author" content="Nicolas Dubois • wo0dyn">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/serif.css" id="theme">
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<style type="text/css">
+			.terminal { background-color: #3F3F3F; color: gray; padding: 5px !important; }
+			.terminal:first-line { color: white; }
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+				<section>
+					<h1>‹Invoke›</h1>
+					<h3>Pythonic task execution</h3>
+					<p>
+						<small>
+							<a href="http://nicolasdubois.com">Nicolas Dubois</a> •
+							<a href="https://twitter.com/wo0dyn">@wo0dyn</a>
+						</small>
+					</p>
+				</section>
+
+				<section>
+					<h2>Invoke</h2>
+
+					<p>
+						<del>Fork</del> Spin-off of fabric v1 (remote/local).
+					</p>
+					<p>
+						<dl>
+							<dt>remote</dt>
+							<dd>fabric v2</dd>
+							<dt>local</dt>
+							<dd>invoke</dd>
+						</dl>
+					</p>
+					<p>
+						<img style="border:none" src="img/pypip-python-versions.png">
+						<img style="border:none" src="img/pypip-version.png">
+					</p>
+
+				</section>
+
+				<section>
+					<h2>Install</h2>
+					<p>
+						<pre class="terminal">$ pip install invoke</pre>
+					</p>
+					<p>
+						<pre class="terminal">
+$ ls -l $VIRTUAL_ENV/bin | grep inv
+inv
+invoke</pre>
+					</p>
+				</section>
+
+				<section>
+
+					<section>
+						<h2>Create tasks</h2>
+						<p>
+							<pre class="terminal">$ vim tasks.py</pre>
+						</p>
+
+					</section>
+					<section>
+						<h2>Create tasks</h2>
+						<p>
+							<pre class="terminal">$ vim tasks.py</pre>
+						</p>
+						<p>
+							<pre><code data-trim>
+from invoke import run
+
+def update_dev_env():
+    run('git pull --rebase origin')
+    run('pip install -r requirements/dev.txt')
+    run('django-admin migrate --noinput')
+    run('django-admin compilemessages')
+</code></pre>
+						</p>
+						<p>
+							<pre class="terminal">
+$ invoke --list
+No tasks found in collection 'tasks'!</pre>
+						</p>
+					</section>
+					<section>
+						<h2>Create tasks</h2>
+						<p>
+							<pre class="terminal">$ vim tasks.py</pre>
+							<pre><code data-trim>
+from invoke import run, task
+
+@task
+def update_dev_env():
+    run('git pull --rebase origin')
+    run('pip install -r requirements/dev.txt')
+    run('django-admin migrate --noinput')
+    run('django-admin compilemessages')
+							</code></pre>
+							<pre class="terminal">
+$ invoke --list
+Available tasks:
+
+  update_dev_env
+  							</pre>
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Execute task</h2>
+
+						<p>
+							<pre class="terminal">
+$ invoke update_dev_env
+remote: Counting objects: 422, done.
+remote: Compressing objects: 100% (46/46), done.
+remote: Total 422 (delta 83), reused 62 (delta 62), pack-reused 314
+Receiving objects: 100% (422/422), 1.17 MiB | 988.00 KiB/s, done.
+Resolving deltas: 100% (264/264), done.
+…
+…
+…
+							</pre>
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Improve task</h2>
+						<p>
+							<pre><code data-trim>
+from invoke import run, task
+
+@task(name='update-dev-env', aliases=['up', 'pull'])
+def update_dev_env():
+    run('git pull --rebase origin')
+    run('pip install -r requirements/dev.txt')
+    run('django-admin migrate --noinput')
+    run('django-admin compilemessages')
+							</code></pre>
+							<pre class="terminal">
+$ invoke --list
+Available tasks:
+
+  update-dev-env (pull, up)
+  							</pre>
+						</p>
+					</section>
+
+
+					<section>
+						<h2>Improve task</h2>
+						<p>
+							<pre><code data-trim>
+from invoke import run, task
+
+@task(name='update-dev-env', aliases=['up', 'pull'])
+def update_dev_env():
+    """ Update developer environment """
+
+    run('git pull --rebase origin')
+    run('pip install -r requirements/dev.txt')
+    run('django-admin migrate --noinput')
+    run('django-admin compilemessages')
+							</code></pre>
+							<pre class="terminal">
+$ invoke --list
+Available tasks:
+
+  update-dev-env (pull)   Update developer environment
+  							</pre>
+						</p>
+					</section>
+
+					<section>
+						<h2>Improve task</h2>
+						<p>
+							<pre><code data-trim>
+from invoke import run, task
+
+@task(name='update-dev-env', aliases=['up', 'pull'])
+def update_dev_env():
+    """ Update developer environment """
+
+    run('git pull --rebase origin')
+    run('pip install -r requirements/dev.txt')
+    run('django-admin migrate --noinput')
+    run('django-admin compilemessages')
+							</code></pre>
+							<pre class="terminal">
+$ invoke --help update-dev-env
+Usage: inv[oke] [--core-opts] update-dev-env [other tasks here ...]
+
+Docstring:
+  Update developer environment
+
+Options:
+  none
+  							</pre>
+						</p>
+					</section>
+
+
+					<section>
+						<h2>Improve task</h2>
+						<p>
+							<pre><code data-trim>
+from invoke import run, task
+
+@task(name='update-dev-env', aliases=['up', 'pull'])
+def update_dev_env(remote='origin', pip_install=False, migrate=True):
+    """ Update developer environment """
+
+    run('git pull --rebase {remote}'.format(remote=remote))
+
+    if pip_install:
+        run('pip install -r requirements/dev.txt')
+
+    if migrate:
+        run('django-admin migrate --noinput')
+
+    run('django-admin compilemessages')
+							</code></pre>
+						</p>
+					</section>
+
+					<section>
+						<h2>Improve task</h2>
+						<p>
+							<pre class="terminal">
+$ invoke --help update-dev-env
+Usage: inv[oke] [--core-opts] update-dev-env [--options] [other tasks here ...]
+
+Docstring:
+  Update developer environment
+
+Options:
+  -m, --[no-]migrate
+  -p, --pip-install
+  -r STRING, --remote=STRING
+							</pre>
+						</p>
+					</section>
+
+					<section>
+						<h2>Improve task</h2>
+						<p>
+							<pre><code data-trim>
+from invoke import run, task
+
+@task(name='update-dev-env', aliases=['up', 'pull'], help={
+    'remote': 'git remote (default: “origin”)',
+    'pip-install': 'install pip requirements',
+    'migrate': 'run Django migrations',
+})
+def update_dev_env(remote='origin', pip_install=False, migrate=True):
+    """ Update developer environment """
+    run('git pull --rebase {remote}'.format(remote=remote))
+
+    if pip_install:
+        run('pip install -r requirements/dev.txt')
+
+    if migrate:
+        run('django-admin migrate --noinput')
+
+    run('django-admin compilemessages')
+							</code></pre>
+						</p>
+					</section>
+
+					<section>
+						<h2>Improve task</h2>
+						<p>
+							<pre class="terminal">
+$ invoke --help update-dev-env
+Usage: inv[oke] [--core-opts] update-dev-env [--options] [other tasks here ...]
+
+Docstring:
+  Update developer environment
+
+Options:
+  -m, --[no-]migrate           run Django migrations
+  -p, --pip-install            install pip requirements
+  -r STRING, --remote=STRING   git remote (default: “origin”)
+							</pre>
+						</p>
+					</section>
+
+				</section>
+				<section>
+					<section>
+						<h2>Invoke Core options</h2>
+						<p>
+							<pre class="terminal">
+$ invoke --help  # output truncated
+Usage: inv[oke] [--core-opts] task1 [--task1-opts] ...
+
+Core options:
+  -d, --debug       Enable debug output.
+  -e, --echo        Echo executed commands before running.
+  -p, --pty         Use a pty when executing shell commands.
+  -w, --warn-only   Warn, instead of failing, when shell commands fail.
+							</pre>
+						</p>
+					</section>
+					<section>
+						<h2>Invoke Core options</h2>
+						<p>
+							<pre><code data-trim>
+from invoke import ctask as task
+
+@task(name='update-dev-env')
+def update_dev_env(context):
+    context.run('git pull --rebase origin')
+    context.run('pip install -r requirements/dev.txt')
+    context.run('django-admin migrate --noinput')
+    context.run('django-admin compilemessages')
+							</code></pre>
+							<pre class="terminal">
+$ invoke --echo update-dev-env
+<strong>git pull --rebase origin</strong>
+remote: Counting objects: 422, done.
+remote: Compressing objects: 100% (46/46), done.
+remote: Total 422 (delta 83), reused 62 (delta 62), pack-reused 314
+…
+<strong>pip install -r requirements/dev.txt</strong>
+…
+…</pre>
+						</p>
+					</section>
+				</section>
+				<section>
+					<h2>Collections/Namespaces</h2>
+					<p>
+						<pre class="terminal">
+$ tree tasks
+tasks
+├── __init__.py
+├── basics.py
+├── ci.py
+├── docs.py
+├── i18n.py
+├── tests.py
+├── ui.py
+└── utils.py</pre>
+						<pre class="terminal">$ invoke docs.build</pre>
+						<pre class="terminal">$ invoke ci.launch --qa-tests</pre>
+					</p>
+				</section>
+				<section>
+					<h2>Cool story bro…</h2>
+					<h4>…why do I need Invoke?</h4>
+					<ul>
+						<li class="fragment">python ≥ bash
+						<li class="fragment">Messy Makefile <i class="fragment">(<b>@twidi</b> knows…)</i>
+						<li class="fragment">Django management command
+					</ul>
+				</section>
+				<section>
+					<h2>Related project</h2>
+					<h4 class="fragment">Invocations (Reusable Invoke tasks)</h4>
+					<ul>
+						<li class="fragment">docs
+						<li class="fragment">packaging
+						<li class="fragment">testing
+					</ul>
+				</section>
+				<section>
+					<h1>‹/Invoke›</h1>
+					<h3>Pythonic task execution</h3>
+					<h4>
+						<ul>
+							<li><a href="https://github.com/pyinvoke">https://github.com/pyinvoke</a>
+							<li><a href="http://www.pyinvoke.org">http://www.pyinvoke.org</a>
+						</ul>
+					</h4>
+				</section>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				transition: 'slide',
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
