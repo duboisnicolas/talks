@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>À quoi ressemblerait mon Python ?</title>
+		<meta name="author" content="Nicolas Dubois">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<link rel="stylesheet" href="css/nico.css">
+
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+	</head>
+
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>À quoi ressemblerait <em>mon</em> Python ?</h1>
+					<p>
+						<small><a href="http://nicolasdubois.com">Nicolas Dubois</a> / <a href="http://twitter.com/duboisnicolas">@duboisnicolas</a></small>
+					</p>
+				</section>
+
+				<section>
+					<section>
+						<h2>Pourquoi python ?</h2>
+						<p>Mon langage préféré est python</p>
+						<p><small>(yeah, no kidding?!)</small></p>
+
+					</section>
+					<section>
+						<h3>Pragmatisme</h3>
+						<pre><code data-trim style="font-size: 18px; margin-top: 20px;">public class HelloWorld {
+    public static void main(String [] args) {
+        System.out.println("Hello World!");
+    }
+}</code></pre>
+					vs
+					<pre><code data-trim style="font-size: 18px; margin-top: 20px;">print("Hello World!")</code></pre>
+					</section>
+					<section>
+						<h3>Très peu de bruit</h3>
+						<pre><code>&lt;?php
+
+class Foo {
+    function bar($params) {
+        foreach($params as $param) {
+            print $param;
+        }
+    }
+}</code></pre>
+						<pre><code>class Foo
+    function bar params
+        foreach params as param
+            print param</code></pre>
+						<p>Différence : 127 caractères vs 89 caractères</p>
+					</section>
+					<section>
+						<h3>Très peu de bruit</h3>
+						<pre><code>class Foo:
+    def bar(params):
+        for param in params:
+            print param</code></pre>
+						<pre><code>class Foo
+    def bar params
+        for param in params
+            print param</code></pre>
+						<p>Différence : 84 caractères vs 80 caractères</p>
+					</section>
+					<section>
+						<h3>Que faire de plus ?</h3>
+					</section>
+					<section>
+						<p>
+							<img src="images/tweet.png">
+						</p>
+					</section>
+					<section>
+						<h3>Que faire de plus ?</h3>
+						<p>
+							Utilisation des opérateurs Unicode
+							<ul>
+								<li>Plus précis
+								<li>Plus concis
+							</ul>
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Importance des symboles</h2>
+						<p>10 + 10 + 10 + 10 + 10 + 10 + 10</p>
+						<p><small>s'écrit plus simplement</small></p>
+						<p>7 × 10</p>
+					</section>
+
+					<section>
+						<h3>Symboles plus précis</h3>
+						<p>
+							<table class="listing">
+							<tr><td> &gt;=                 <td> ≥
+							<tr><td> &lt;=              <td> ≤
+							<tr><td> !=                 <td> ≠
+							<tr><td> Not                <td> ¬
+							<tr><td> x ** 2             <td> x²
+							<tr><td> x ** 3             <td> x³
+							<tr><td> //                 <td> ÷
+							</table>
+						</p>
+						<p style="margin-top:1em">
+							<table class="listing">
+							<tr><td> sqrt(x)            <td> √(x)
+							<tr><td> sum(sequence)      <td> ∫(sequence)
+							</table>
+						</p>
+					</section>
+					<section>
+						<h3>Lettres grecques</h3>
+						<p>∆, Ω, ∑, π/∏</p>
+						<h4>Code python</h4>
+						<pre><code>discriminant = (b ** 2) - (4 * a * c)</code></pre>
+						<h4>Code avec <em>mon</em> python</h4>
+						<pre><code>∆ = b² - 4 * a * c</code></pre>
+						<h4>Vraie formule</h4>
+						<pre><code>∆ = b² - 4ac</code></pre>
+					</section>
+					<section>
+						<h3>Autre moyen de faire des boucles infinies ?<br><small>(pas super convaincu)</small></h3>
+						<p>
+						<pre><code>for range(0, ∞):
+    print('foo')</code></pre>
+						</p>
+					</section>
+					<section>
+					<h3>L'escroquerie syntaxique la plus célèbre dans l'histoire de la programmation</h3>
+					</section>
+					<section>
+						<h3>L'égalité avec <code>==</code></h3>
+					</section>
+					<section>
+						<h3>L'égalité avec <code>===</code></h3>
+						<p>
+							<img src="images/busting.gif">
+						</p>
+					</section>
+					<section>
+						<h3>L'égalité avec <code>==</code></h3>
+						<h4>En python</h4>
+						<table class="listing">
+						<tr><td>Affectation   <td>=
+						<tr><td>Égalité  <td>==
+						</table>
+					</section>
+					<section>
+						<h3>L'égalité avec <code>==</code></h3>
+						<h4>En algorithmique</h4>
+						<table class="listing">
+						<tr><td>Affectation   <td>←
+						<tr><td>Égalité  <td>=
+						</table>
+					</section>
+					<section>
+						<h3>Avec <em>mon</em> python</h3>
+						<table class="listing">
+						<tr><td>=   <td>:
+						<tr><td>==  <td>=
+						</table>
+					</section>
+					<section>
+						<h3>Compilation</h3>
+						<pre><code>from datetime import datetime
+start: datetime.now()
+
+found is False
+π: 3.14
+list: [10, 22, 46]
+
+while ¬found:
+    if a ≠ π:
+        if a ≥ 10:
+            b: √(50 ÷ 2)
+            ∑: ∫(list)
+            if ∑ - a = 67:
+                found is True
+
+∆t: datetime.now() - start
+print("Time: {}ms".format(∆t))</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Code difficile à écrire ?</h2>
+						<p>Zen de python : Readability counts.</p>
+						<blockquote>
+						On passe seulement 25 % de notre temps à écrire du code pour rendre les 75 % de notre temps à le rendre plus lisible.
+						</blockquote>
+					</section>
+					<section>
+						<h3>Cool story bro…<br>on change de clavier ?</h3>
+						<p>
+							<img src="images/keyboard.jpg">
+						</p>
+					</section>
+					<section>
+						<h3>Solutions</h3>
+						<ul>
+							<li>Caractères accessibles : | → ∑∆∏∫√¬π÷
+							<li>Complétion dans les IDEs ? Menu contextuel : D → (variables commençant par D) + ∆
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h2>Merci</h2>
+					<p>Nicolas Dubois  / <a href="http://twitter.com/duboisnicolas">@duboisnicolas</a></p>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+		<script src="js/twitter-widgets.js"></script>
+
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'linear', // cube/page/concave/zoom/linear
+
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

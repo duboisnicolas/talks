@@ -1,0 +1,8 @@
+table.listing {
+    margin: auto
+}
+
+table.listing tr td:first-child {
+    text-align: right;
+    padding-right: 2em;
+}
