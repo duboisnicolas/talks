@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Slides</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <section class="remark-slides-area">
+      <main class="remark-slide-container remark-visible"></main>
+    </section>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/remark.min.js"></script>
+    <script>
+      var hljs = remark.highlighter.engine;
+    </script>
+    <script src="js/remark.language.js"></script>
+    <script src="js/video.js"></script>
+    <script>
+      var showSlideCallback = function(slide) {};
+      var resetRemark = function(name, options) {
+        name = name || '';
+        options = $.extend({
+          highlightStyle: 'github',
+          highlightLines: true,
+          sourceUrl: 'slides/' + name + '/slides.md',
+          ratio: '16:9',
+          navigation: {
+            scroll: false,
+          }
+        }, options);
+        // Remove old remark
+        $('.remark-notes-area').remove();
+        $('.remark-slides-area').remove();
+        $('.remark-preview-area').remove();
+        $('.remark-backdrop').remove();
+        $('.remark-pause').remove();
+        $('.remark-help').remove();
+        // Reset the position
+        window.location.hash = '#1';
+        document.title = [options.title, options.author].join(' • ');
+        // Create new remark
+        slideshow = remark.create(options);
+        slideshow.on('showSlide', showSlideCallback);
+      };
+
+      var jinjazord = {
+          title: 'Formulaires et macros Jinja',
+          author: 'Nicolas Dubois • @wo0dyn',
+          date: '2017-09-23',
+          options: {
+            highlightStyle: 'github',
+          }
+      };
+
+      $(document).ready(function() {
+        resetRemark('2017-09-23-jinjazord', jinjazord);
+      });
+    </script>
+  </body>
+</html>
